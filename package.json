@@ -1,0 +1,26 @@
+{
+  "name": "file_manager",
+  "version": "1.0.0",
+  "description": "File Manager using Node.js API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnastasiyaHaidanovich/fileManager.git"
+  },
+  "keywords": [
+    "file",
+    "manager",
+    "node",
+    "nodejs"
+  ],
+  "author": "Anastasiya Haidanovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnastasiyaHaidanovich/fileManager/issues"
+  },
+  "homepage": "https://github.com/AnastasiyaHaidanovich/fileManager#readme"
+}

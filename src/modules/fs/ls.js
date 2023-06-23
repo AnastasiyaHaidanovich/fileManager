@@ -1,19 +1,19 @@
 import fs from 'fs';
 
-const ls = async (url) => {
+const ls = (url) => {
 
-//   fs.lstatSync(path_string).isDirectory() 
-// isFile
-
-  let directoryFiles = [];
+  let directoriesList = [];
+  let filesList = [];
     fs.readdir(url, (err, files) => {
     if (err)
-      console.warn('Operation failed');
+      console.log('Operation failed');   
     else {
-      files.forEach(file => {
-        directoryFiles.push(file);
-      })
-      //console.table
+      process.nextTick(() => {
+        files.forEach(file => {
+          fs.lstatSync(url + '\\' + file).isDirectory() ? directoriesList.push([file, 'directory']) : filesList.push([file, 'file'])
+        })
+        console.table(directoriesList.sort().concat(filesList.sort()))
+      });      
     };
   })
 }

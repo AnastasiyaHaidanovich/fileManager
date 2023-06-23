@@ -2,6 +2,7 @@ import getDirname from './getDirname.js';
 import up from './modules/fs/up.js';
 import ls from './modules/fs/ls.js';
 import path from 'path';
+import readStream from './modules/streams/read.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
@@ -28,6 +29,9 @@ const start = () => {
           ? chunkStringified.trim().slice(3) 
           : path.join(currentUrl, chunkStringified.trim().slice(3));
         break;
+      case chunkStringified.trim().startsWith('cat'):
+        readStream(path.join(currentUrl, chunkStringified.trim().slice(4)));
+      break; 
     }      
 
     fs.stat(currentUrl,(err) => {

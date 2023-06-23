@@ -1,10 +1,10 @@
 import getDirname from './getDirname.js';
 import up from './modules/fs/up.js';
 import ls from './modules/fs/ls.js';
+import createFile from './modules/fs/create.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
 
 const start = () => {
   const Username = process.argv[2].slice(process.argv[2].indexOf('=') + 1);
@@ -31,6 +31,9 @@ const start = () => {
         break;
       case chunkStringified.trim().startsWith('cat'):
         readStream(path.join(currentUrl, chunkStringified.trim().slice(4)));
+      break; 
+      case chunkStringified.trim().startsWith('add'):
+        createFile(path.join(currentUrl, chunkStringified.trim().slice(4)));
       break; 
     }      
 

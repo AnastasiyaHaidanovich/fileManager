@@ -8,6 +8,7 @@ import copyFile from './modules/fs/copy.js';
 import deleteFile from './modules/fs/delete.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
+import osInfo from './modules/os/os.js';
 import fs from 'fs';
 
 const start = () => {
@@ -51,6 +52,9 @@ const start = () => {
       case chunkStringified.trim().startsWith('rm '):
         deleteFile(path.join(currentUrl, chunkStringified.trim().slice(3)));
       break; 
+      case chunkStringified.trim().startsWith('os '):
+        osInfo(chunkStringified.trim().slice(3));
+      break;
     }      
 
     fs.stat(currentUrl,(err) => {

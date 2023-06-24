@@ -5,6 +5,7 @@ import renameFile from './modules/fs/rename.js';
 import createFile from './modules/fs/create.js';
 import moveFile from './modules/fs/move.js';
 import copyFile from './modules/fs/copy.js';
+import deleteFile from './modules/fs/delete.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
 import fs from 'fs';
@@ -46,6 +47,9 @@ const start = () => {
       break; 
       case chunkStringified.trim().startsWith('mv '):
         moveFile(currentUrl, chunkStringified.trim().slice(3));
+      break; 
+      case chunkStringified.trim().startsWith('rm '):
+        deleteFile(path.join(currentUrl, chunkStringified.trim().slice(3)));
       break; 
     }      
 

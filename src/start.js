@@ -1,6 +1,7 @@
 import getDirname from './getDirname.js';
 import up from './modules/fs/up.js';
 import ls from './modules/fs/ls.js';
+import renameFile from './modules/fs/rename.js';
 import createFile from './modules/fs/create.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
@@ -34,6 +35,9 @@ const start = () => {
       break; 
       case chunkStringified.trim().startsWith('add'):
         createFile(path.join(currentUrl, chunkStringified.trim().slice(4)));
+      break; 
+      case chunkStringified.trim().startsWith('rn '):
+        renameFile(currentUrl, chunkStringified.trim().slice(3));
       break; 
     }      
 

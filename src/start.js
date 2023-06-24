@@ -9,6 +9,7 @@ import deleteFile from './modules/fs/delete.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
 import osInfo from './modules/os/os.js';
+import calcHash from './modules/hash/hash.js';
 import fs from 'fs';
 
 const start = () => {
@@ -54,6 +55,9 @@ const start = () => {
       break; 
       case chunkStringified.trim().startsWith('os '):
         osInfo(chunkStringified.trim().slice(3));
+      break;
+      case chunkStringified.trim().startsWith('hash '):
+        calcHash(chunkStringified.trim().slice(5));
       break;
     }      
 

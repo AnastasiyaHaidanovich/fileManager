@@ -3,6 +3,7 @@ import up from './modules/fs/up.js';
 import ls from './modules/fs/ls.js';
 import renameFile from './modules/fs/rename.js';
 import createFile from './modules/fs/create.js';
+import moveFile from './modules/fs/move.js';
 import copyFile from './modules/fs/copy.js';
 import path from 'path';
 import readStream from './modules/streams/read.js';
@@ -42,6 +43,9 @@ const start = () => {
       break; 
       case chunkStringified.trim().startsWith('cp '):
         copyFile(currentUrl, chunkStringified.trim().slice(3));
+      break; 
+      case chunkStringified.trim().startsWith('mv '):
+        moveFile(currentUrl, chunkStringified.trim().slice(3));
       break; 
     }      
 

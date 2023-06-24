@@ -10,6 +10,8 @@ import path from 'path';
 import readStream from './modules/streams/read.js';
 import osInfo from './modules/os/os.js';
 import calcHash from './modules/hash/hash.js';
+import compress from './modules/zip/compress.js';
+import decompress from './modules/zip/decompress.js';
 import fs from 'fs';
 
 const start = () => {
@@ -58,6 +60,12 @@ const start = () => {
       break;
       case chunkStringified.trim().startsWith('hash '):
         calcHash(chunkStringified.trim().slice(5));
+      break;
+      case chunkStringified.trim().startsWith('compress '):
+        compress(currentUrl,chunkStringified.trim().slice(9));
+      break;
+      case chunkStringified.trim().startsWith('decompress '):
+        decompress(currentUrl,chunkStringified.trim().slice(11));
       break;
     }      
 

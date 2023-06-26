@@ -2,11 +2,11 @@ import fs from 'fs';
 import zlib from 'zlib';
 import path from 'path';
 
-const decompress = (url, params) => {
-  const links = params.split(' ');
-  const readStream = fs.createReadStream(path.join(url, links[0]));
-  const writeStream = fs.createWriteStream(path.join(url, links[1]));
+const decompress = (url, decompressedUrl) => {
+  const readStream = fs.createReadStream(url);
+  const writeStream = fs.createWriteStream(path.join(decompressedUrl, path.basename(url).slice(0, path.basename(url).length - 3)));
   const brotli = zlib.createBrotliDecompress();
+  console.log(path.join(decompressedUrl, path.basename(url).slice(0, path.basename(url).length - 3)))
 
   const stream = readStream.pipe(brotli).pipe(writeStream);
 

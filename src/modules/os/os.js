@@ -17,6 +17,8 @@ const osInfo = (params) => {
     case params === '--architecture':
       console.log(os.arch()) 
       break; 
+    default:
+      console.log('Invalid input')
   }
 }
 export default osInfo;

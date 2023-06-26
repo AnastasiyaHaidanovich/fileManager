@@ -21,6 +21,12 @@ const start = () => {
   console.log(`Welcome to the File Manager, ${Username}!`);
   console.log('You are welcome to print commands. Please, wait for results')
 
+const isAbsolute = (url, curUrl) => {
+  return path.isAbsolute(url) 
+    ? url
+    : path.join(curUrl, url);
+}
+
   const echoInput = async (chunk) => {
     const chunkStringified = chunk.toString();
     switch (true) {
@@ -33,40 +39,45 @@ const start = () => {
         ls(currentUrl);
         break;
       case chunkStringified.trim().startsWith('cd '):
-        currentUrl = path.isAbsolute(chunkStringified.trim().slice(3)) 
-          ? chunkStringified.trim().slice(3) 
-          : path.join(currentUrl, chunkStringified.trim().slice(3));
+        currentUrl = isAbsolute(chunkStringified.trim().slice(3), currentUrl) 
         break;
-      case chunkStringified.trim().startsWith('cat'):
-        readStream(path.join(currentUrl, chunkStringified.trim().slice(4)));
+      case chunkStringified.trim().startsWith('cat '):
+        readStream(isAbsolute(chunkStringified.trim().slice(4), currentUrl));
       break; 
-      case chunkStringified.trim().startsWith('add'):
-        createFile(path.join(currentUrl, chunkStringified.trim().slice(4)));
+      case chunkStringified.trim().startsWith('add '):
+        createFile(isAbsolute(chunkStringified.trim().slice(4), currentUrl));
       break; 
       case chunkStringified.trim().startsWith('rn '):
-        renameFile(currentUrl, chunkStringified.trim().slice(3));
+        const fileNames = chunkStringified.trim().slice(3).split(' ');
+        renameFile(isAbsolute(fileNames[0], currentUrl), isAbsolute(fileNames[1], currentUrl));
       break; 
       case chunkStringified.trim().startsWith('cp '):
-        copyFile(currentUrl, chunkStringified.trim().slice(3));
+        const copyFiles = chunkStringified.trim().slice(3).split(' ');
+        copyFile(isAbsolute(copyFiles[0], currentUrl), isAbsolute(copyFiles[1], currentUrl));
       break; 
       case chunkStringified.trim().startsWith('mv '):
-        moveFile(currentUrl, chunkStringified.trim().slice(3));
+        const moveFiles = chunkStringified.trim().slice(3).split(' ');
+        moveFile(isAbsolute(moveFiles[0], currentUrl), isAbsolute(moveFiles[1], currentUrl));
       break; 
       case chunkStringified.trim().startsWith('rm '):
-        deleteFile(path.join(currentUrl, chunkStringified.trim().slice(3)));
+        deleteFile(isAbsolute(chunkStringified.trim().slice(3), currentUrl));
       break; 
       case chunkStringified.trim().startsWith('os '):
         osInfo(chunkStringified.trim().slice(3));
       break;
       case chunkStringified.trim().startsWith('hash '):
-        calcHash(chunkStringified.trim().slice(5));
+        calcHash(isAbsolute(chunkStringified.trim().slice(5), currentUrl));
       break;
       case chunkStringified.trim().startsWith('compress '):
-        compress(currentUrl,chunkStringified.trim().slice(9));
+        const compressFiles = chunkStringified.trim().slice(9).split(' ');
+        compress(isAbsolute(compressFiles[0], currentUrl), isAbsolute(compressFiles[1], currentUrl));
       break;
       case chunkStringified.trim().startsWith('decompress '):
-        decompress(currentUrl,chunkStringified.trim().slice(11));
+        const decompressFiles = chunkStringified.trim().slice(11).split(' ');
+        decompress(isAbsolute(decompressFiles[0], currentUrl), isAbsolute(decompressFiles[1], currentUrl));
       break;
+      default:
+        console.log('Invalid input')
     }      
 
     fs.stat(currentUrl,(err) => {
@@ -82,13 +93,13 @@ const start = () => {
 
   process.stdin.on('data', echoInput);
 
-  process.on('exit', () => {
-     console.log(`Thank you for using File Manager, ${Username}, goodbye!`);
+  process.on('SIGINT', () => {
+    process.exit(0);
   });
-  
-//   process.on('SIGINT', () => {
-//     process.stdout.write(`Thank you for using File Manager, ${Username}, goodbye!`);
-//  });
+ 
+ process.on('exit', () => {
+  console.log(`\nThank you for using File Manager, ${Username}, goodbye!`);
+});
 };
 
 start();

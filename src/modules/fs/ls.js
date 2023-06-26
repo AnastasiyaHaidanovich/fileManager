@@ -9,10 +9,14 @@ const ls = (url) => {
       console.log('Operation failed');   
     else {
       process.nextTick(() => {
-        files.forEach(file => {
-          fs.lstatSync(url + '\\' + file).isDirectory() ? directoriesList.push([file, 'directory']) : filesList.push([file, 'file'])
-        })
-        console.table(directoriesList.sort().concat(filesList.sort()))
+        try{
+          files.forEach(file => {
+            fs.statSync(url + '\\').isDirectory() ? directoriesList.push([file, 'directory']) : filesList.push([file, 'file'])
+          })
+          console.table(directoriesList.sort().concat(filesList.sort()))
+        } catch {
+          console.log('Operation failed')
+        }        
       });      
     };
   })
